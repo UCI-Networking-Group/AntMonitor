@@ -1,0 +1,124 @@
+<!--
+  ~  This file is part of AntMonitor <https://athinagroup.eng.uci.edu/projects/antmonitor/>.
+  ~  Copyright (C) 2018 Anastasia Shuba and the UCI Networking Group
+  ~  <https://athinagroup.eng.uci.edu>, University of California, Irvine.
+  ~
+  ~  AntMonitor is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 2 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  AntMonitor is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with AntMonitor. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!-- Provide a general introduction / user guide here -->
+<!--
+    See:
+    http://docs.oracle.com/javase/6/docs/technotes/tools/windows/javadoc.html#overviewcomment
+    http://stackoverflow.com/questions/10381649/custom-index-html-javadoc-page
+-->
+<html>
+<body>
+This is a developer's guide for AntMonitorLib. It assumes that you are already familiar with
+the basic goals of the AntMonitor project. If not, please visit the
+<a href="https://athinagroup.eng.uci.edu/projects/antmonitor">project website</a> and see our latest papers.
+<br>
+This guide also assumes that you are familiar with the API overview of the
+<a href="https://uci-networking-group.github.io/AntMonitorExample/">AntMonitorLib</a>.
+
+<h1 id="significant-packages-and-classes">Significant Packages and Classes</h1>
+<p>
+    The library is meant to provide a hook into all IP traffic of an Android device. It does so
+    by establishing an on-device VPN connection. The class responsible for routing traffic is the
+    {@link edu.uci.calit2.antmonitor.lib.vpn.ForwarderManager}. Packets
+    sent by other apps arrive at the TUN interface, are read by the
+    {@link edu.uci.calit2.antmonitor.lib.vpn.ForwarderManager}, are
+    forwarded for real-time analysis, and are then sent out to the Internet over a protected socket.
+    Responses are read from the socket, are subjugated to real-time analysis, and are then sent
+    back to the apps over the TUN interface.
+</p>
+<p>
+    Because packets read from TUN are Layer-3 (IP) packets and Java sockets operate on Layer-4
+    (TCP/UDP), {@link edu.uci.calit2.antmonitor.lib.vpn.ForwarderManager}
+    needs to perform a translation between these two layers and keep track of TCP states.
+    An example of how a TCP connection is setup is shown in <a href="#translation">Figure 1</a>.
+    For more details, see the processPacket(packet) method of
+    {@link edu.uci.calit2.antmonitor.lib.vpn.TCPForwarder}.
+</p>
+
+<figure id="translation">
+    <img src="images/translation.png" alt="Keeping track of TCP states" width="960px"/>
+    <figcaption>
+        Fig. 1: Keeping track of TCP states.
+    </figcaption>
+</figure>
+
+<h1>Mapping of Packets to Apps</h1>
+<p>
+    In both offline and online analysis, library users can invoke an API call to map a given
+    packet to an app that was responsible for sending or receiving it.
+    The mapping to app names is done by looking up
+    the packets' source and destination IPs and port numbers in
+    the list of active connections available in <code>/proc/net</code>, which
+    provides the UIDs of apps responsible for each connection. This look-up is implemented in
+    native C to optimize the performance. The corresponding file can be found in
+    <code>antmonitorlib/src/main/jni/connectionMapper.cpp</code>.
+    Given a UID returned from the C code, we get the corresponding package name using Android APIs.
+    <br><br>
+
+    The class responsible for invoking the mapping and communicating with the native C code is
+    {@link edu.uci.calit2.antmonitor.lib.logging.ConnectionFinder}.
+</p>
+
+<h1>TLS Interception</h1>
+
+<p>
+    To allow library users to inspect encrypted traffic, the library implements a TLS proxy, as
+    shown in <a href="#block-diagram">Figure 2</a>. TLS connections are first forwarded to
+    {@link edu.uci.calit2.antmonitor.lib.vpn.TLSProxyServer}, which handles each connection on
+    a separate thread. Currently, two threads are created per TLS/SSL connection. The threads are
+    maintained by {@link edu.uci.calit2.antmonitor.lib.vpn.TLSProxyForwarder}, which is where
+    the packets get decrypted, sent for analysis, and then re-encrypted before being forwarded
+    to the Internet.<br><br>
+
+    The TLS proxy uses the <a href="https://code.google.com/archive/p/sandrop/">SandroProxy</a>
+    library, and a modified version of parts of the
+    <a href="https://bitbucket.org/Near/privacyguard">PrivacyGuard code</a>.
+    Upon install time, library users can invoke an API call to ask the user to install a root
+    certificate. This certificate, by default, is trusted by all other apps.
+    When an app wants to establish a secure connection, the SSL hello is intercepted by the proxy, as
+    shown in <a href="#tls-fig">Figure 3</a>.
+    The proxy then sends a fake certificate back to the app, which is signed by
+    the root certificate that was installed by the user. The app and the proxy then finish negotiating
+    keys using the fake certificate, and the proxy and the server exchange keys using the actual server
+    certificate. Once the key exchange is complete, the proxy can successfully decrypt packets coming
+    in from the app and from the server, and then re-encrypt them before forwarding. This method
+    works for most apps, but it cannot intercept traffic from highly sensitive apps, such as banking
+    apps, that use certificate pinning. These apps only trust locally stored certificates, and will
+    not trust the installed root certificate. Due to the intrusive nature of intercepting TLS/SSL
+    traffic, we allow library users to disable this option at any time.
+</p>
+
+<figure id="tls-fig">
+    <img src="images/tls.png"
+         alt="TLS Interception" width="760px"/>
+    <figcaption>
+        Fig. 3: TLS Interception.
+    </figcaption>
+</figure>
+
+<h1>Building the Library</h1>
+<p>
+    The library gets built alongside the AntClient app and is outputted into
+    <code>antmonitorlib/build/outputs/aar</code>.
+</p>
+
+
+</body>
+</html>

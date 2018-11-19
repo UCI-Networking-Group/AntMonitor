@@ -1,0 +1,52 @@
+<!--
+  ~  This file is part of AntMonitor <https://athinagroup.eng.uci.edu/projects/antmonitor/>.
+  ~  Copyright (C) 2018 Anastasia Shuba and the UCI Networking Group
+  ~  <https://athinagroup.eng.uci.edu>, University of California, Irvine.
+  ~
+  ~  AntMonitor is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 2 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  AntMonitor is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with AntMonitor. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:viewportWidth="24.0"
+        android:viewportHeight="24.0">
+    <path
+        android:pathData="M13,0.461C12.053,0.162 11.045,0 10,0S7.948,0.162 7,0.461V5h6V0.461z"
+        android:fillColor="#757575"/>
+    <path
+        android:pathData="M15,1.354V5h3.647C17.771,3.489 16.512,2.23 15,1.354z"
+        android:fillColor="#757575"/>
+    <path
+        android:pathData="M13,11.758V7H7v6h4.758C12.126,12.541 12.542,12.125 13,11.758z"
+        android:fillColor="#757575"/>
+    <path
+        android:pathData="M19.987,10.256C19.989,10.17 20,10.086 20,10c0,-1.045 -0.162,-2.053 -0.461,-3H15v3.584c0.927,-0.375 1.938,-0.586 3,-0.586C18.688,9.998 19.351,10.093 19.987,10.256z"
+        android:fillColor="#757575"/>
+    <path
+        android:pathData="M1.354,5H5V1.354C3.489,2.23 2.23,3.489 1.354,5z"
+        android:fillColor="#757575"/>
+    <path
+        android:pathData="M7,15v4.54C7.948,19.838 8.955,20 10,20c0.088,0 0.173,-0.011 0.26,-0.014C10.096,19.35 10,18.685 10,17.998c0,-1.061 0.211,-2.072 0.586,-2.998H7z"
+        android:fillColor="#757575"/>
+    <path
+        android:pathData="M5,18.646V15H1.354C2.23,16.512 3.489,17.77 5,18.646z"
+        android:fillColor="#757575"/>
+    <path
+        android:pathData="M0,10c0,1.045 0.163,2.053 0.461,3H5V7H0.461C0.163,7.947 0,8.955 0,10z"
+        android:fillColor="#757575"/>
+    <path
+        android:pathData="M24.002,18.998v-2H22.9c-0.13,-0.638 -0.385,-1.23 -0.733,-1.754l0.784,-0.784l-1.414,-1.414l-0.784,0.784c-0.524,-0.347 -1.115,-0.601 -1.752,-0.73v-1.101h-2v1.101c-0.637,0.13 -1.228,0.384 -1.753,0.731l-0.783,-0.783l-1.414,1.414l0.783,0.783c-0.348,0.525 -0.602,1.116 -0.731,1.754H12v2h1.102c0.13,0.637 0.384,1.228 0.733,1.753l-0.784,0.784l1.415,1.413l0.783,-0.784c0.524,0.348 1.116,0.602 1.753,0.732v1.101h2v-1.102c0.638,-0.13 1.228,-0.384 1.753,-0.732l0.784,0.783l1.413,-1.415l-0.783,-0.783c0.347,-0.523 0.602,-1.115 0.732,-1.751H24.002zM18,19.998c-1.105,0 -2,-0.896 -2,-2c0,-1.104 0.895,-2 2,-2c1.104,0 2,0.896 2,2C20,19.101 19.104,19.998 18,19.998z"
+        android:fillColor="#757575"/>
+</vector>

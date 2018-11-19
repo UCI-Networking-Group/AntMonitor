@@ -1,0 +1,2 @@
+include ':antmonitorlib', ':app'
+rootProject.name = "antmonitor"

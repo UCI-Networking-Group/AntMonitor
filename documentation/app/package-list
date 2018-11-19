@@ -1,0 +1,9 @@
+edu.uci.calit2.anteater.client.android
+edu.uci.calit2.anteater.client.android.activity
+edu.uci.calit2.anteater.client.android.activity.uielements
+edu.uci.calit2.anteater.client.android.analysis
+edu.uci.calit2.anteater.client.android.database
+edu.uci.calit2.anteater.client.android.device
+edu.uci.calit2.anteater.client.android.fragment
+edu.uci.calit2.anteater.client.android.signals
+edu.uci.calit2.anteater.client.android.util

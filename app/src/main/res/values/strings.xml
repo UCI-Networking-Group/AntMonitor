@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  This file is part of AntMonitor <https://athinagroup.eng.uci.edu/projects/antmonitor/>.
+  ~  Copyright (C) 2018 Anastasia Shuba and the UCI Networking Group
+  ~  <https://athinagroup.eng.uci.edu>, University of California, Irvine.
+  ~
+  ~  AntMonitor is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 2 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  AntMonitor is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with AntMonitor. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string name="app">AntMonitor</string>
+    <string name="no_service">No Internet connection available, make sure you are connected to the internet and try again</string>
+    <string name="app_name">AntMonitor</string>
+
+    <!-- Used to authenticate that we can use antmonitorlib -->
+    <string name="api_key">684e9ecf-8768-4ce2-b156-e2a9098931e9</string>
+    <string name="api_authenticate_fail">Could not start AntMonitor VPN.</string>
+
+    <!-- Strings for Activity Names -->
+    <string name="getting_started">Getting Started</string>
+    <string name="leaks_history">Privacy Exposure History</string>
+    <string name="applications_for_logging">Applications For Logging</string>
+
+    <!-- Strings for Main Sections -->
+    <string name="main_title_real_time">AntMonitor Real-Time</string>
+    <string name="main_title_privacy">Privacy Exposure Report</string>
+    <string name="main_title_contribute">Contribute Logs</string>
+    <string name="main_title_contribute_off">Contribute Logs (Off)</string>
+    <string name="main_title_help">Help</string>
+    <string name="main_title_about">About</string>
+    <string name="main_title_privacy_settings">Privacy Exposure Settings</string>
+    <string name="main_title_contribute_settings">Contribution Settings</string>
+
+    <string name="notification_title_uploading_files">Uploading&#8230;</string>
+    <string name="notification_detail_text_uploading_files">AntMonitor is uploading your traffic data. Thank you for sharing!</string>
+
+    <string name="notification_title_vpnservice">AntMonitor VPN status</string>
+    <string name="notification_detail_text_vpnservice_disconnected">Disconnected</string>
+    <string name="notification_detail_text_vpnservice_connecting">Connecting&#8230;</string>
+    <string name="notification_detail_text_vpnservice_connected">Connected</string>
+    <string name="notification_detail_text_vpnservice_scheduled_connect">Automatic reconnect scheduled</string>
+
+    <string name="dialog_title_confirm_upload">Upload log files</string>
+    <string name="dialog_detail_text_confirm_upload">You have a total of %1$s log data ready for upload. Upload now?</string>
+    <string name="dialog_btn_positive_text">Upload</string>
+    <string name="dialog_btn_negative_text">Cancel</string>
+
+    <!-- Strings for Visualization Activity -->
+    <string name="tv_visualization_info">
+        See active TCP connections from your apps to remote servers (click on icons for more info).
+    </string>
+    <string name="tv_total_bytes">Total Data Transferred: %.3f MB</string>
+
+    <!-- Strings for signals Activity -->
+    <string name="signalsSettings">Settings</string>
+    <string name="signalsUpload">Upload</string>
+    <string name="signalsStatistics">Upload</string>
+
+    <!-- Strings for signals Activity: Cellular Tab View -->
+    <string name="networkTypeLabel">Network Type:</string>
+    <string name="networkCarrierLabel">Network Carrier:</string>
+    <string name="MNCLabel">MNC:</string>
+    <string name="MCCLabel">MCC:</string>
+    <string name="LACLabel">LAC:</string>
+    <string name="CIDLabel">Cell-ID:</string>
+    <string name="LteRsrpLabel">LTE RSRP: </string>
+    <string name="LteRsrqLabel">LTE RSRQ: </string>
+    <string name="HSPA_RSSI_Label">HSPA RSS: </string>
+
+    <string name="UNKNOWN">Unknown</string>
+
+    <string name="CIDConvertedLabel">Cell-ID (converted):</string>
+
+    <!-- Strings for Location/Maps Testing and Debugging -->
+
+    <string name="title_activity_ant_monitor_main">AntMonitor Real-Time</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_antmonitor_id">My AntMonitor ID</string>
+    <string name="navigation_settings">Settings</string>
+
+
+    <!-- Strings Contribution Settings -->
+
+    <string name="clear_log_statistics">Clear Upload History</string>
+    <string name="clear_logs">Clear Logs on Device</string>
+    <string name="upload_now">Upload Logs Now</string>
+    <string name="upload_now_detail">AntMonitor will upload logs when there is wifi available and the device is plugged in so battery life will not be affected</string>
+    <string name="contribute_setting_manage_logs">Manage Logs</string>
+    <string name="contribute_level">Contribution Level</string>
+    <string name="contribute_setting_select_applications">Select Applications for Logging</string>
+    <string name="contribute_level_low">Low</string>
+    <string name="contribute_level_med">Medium</string>
+    <string name="contribute_level_high">High</string>
+    <string name="contribute_level_low_detail">Log nothing</string>
+    <string name="contribute_level_med_detail">Log packet headers only</string>
+    <string name="contribute_level_high_detail">Log full packet headers and content</string>
+    <string name="contribute_system_app">System Apps</string>
+    <string name="contribute_system_app_detail">Log system app as well</string>
+    <string name="contribute_installed_apps">Installed Applications</string>
+    <string name="contribute_installed_app_name">Application Name</string>
+    <string name="contribute_privacy_terms">View Privacy Terms</string>
+
+    <!-- Strings Privacy Settings -->
+    <string name="privacy_filters_global">Global Privacy Filters</string>
+    <string name="privacy_filters_app">App Privacy Filters</string>
+    <string name="privacy_filters_global_select">Manage Global Filters</string>
+    <string name="privacy_filters_app_specific_select">Manage Application Filters</string>
+    <string name="privacy_filters_app_specific_details">These Privacy Filters are specific to a given application and will override existing Global Privacy Filters.</string>
+    <string name="privacy_filters_clear">Clear App Filters</string>
+    <string name="privacy_filters_reports">Clear Privacy Reports</string>
+    <string name="privacy_filters_tls">TLS Interception</string>
+    <string name="privacy_filters_tls_detail">Intercept encrypted content</string>
+    <string name="privacy_filters_select_title">Select Global Privacy Filters to Monitor</string>
+    <string name="privacy_filters_select_app_title">Select App Privacy Filters to Monitor</string>
+    <string name="privacy_filters_enabled_filter">Enabled Filter</string>
+    <string name="privacy_filters_enabled_protection_lvl">Protection Lvl</string>
+    <string name="privacy_filters_label">Privacy Filter Label</string>
+    <string name="privacy_filters_value">Privacy Filter Value</string>
+    <string name="privacy_filters_dialog_title">New Privacy Filter</string>
+    <string name="privacy_filters_dialog_filter_label_hint">Enter a Filter Label</string>
+    <string name="privacy_filters_dialog_filter_value_hint">Enter a Filter value</string>
+    <string name="privacy_filters_dialog_filter_error">This field cannot be empty</string>
+    <string name="privacy_filters_dialog_filter_exists">Global Filter already exists for this label</string>
+    <string name="privacy_filters_remove">Remove filter %1$s ?</string>
+
+    <!-- Strings Dialogs -->
+    <string name="completed">Completed</string>
+    <string name="are_you_sure">Confirm</string>
+    <string name="clear_privacy_reports_confirm_alert">Are you sure you want to remove all privacy exposure reports?</string>
+    <string name="clear_privacy_reports_alert">All privacy exposure reports have been cleared</string>
+    <string name="clear_privacy_filters_alert">All application filters have been cleared</string>
+    <string name="clear_privacy_filters_confirm_alert">Are you sure you want to remove all application filters?</string>
+    <string name="clear_logs_alert">All logs on the device have been cleared</string>
+    <string name="clear_logs_confirm_alert">Are you sure you want to remove all logs from your device?</string>
+    <string name="clear_logs_statistics_alert">All history regarding uploading logs have been cleared</string>
+    <string name="clear_logs_statistics_confirm_alert">Are you sure you want to remove all log uploading history?</string>
+    <string name="logs_uploaded_alert">Logs have been sent to AntMonitor servers. Thank you for contributing!</string>
+    <string name="ok">OK</string>
+    <string name="close">Close</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="getting_started_privacy_terms_info">AntMonitor relies on VPN to intercept and inspect all unencrypted packets on your device  and — if you enable SSL interception — all encrypted packets as well. AntMonitor inspects those packets for potential privacy leaks, visualizes your traffic in real time, and then sends the packets along their way towards their destination. Inspecting is not the same as logging packets.
+        \n\nThe current version of AntMonitor does NOT log any data on your device or on a server. In the future, we plan to log data and metadata, for the purpose of providing you enhanced services. We will explicitly notify and ask for your permission when this happens in the next version of the app.</string>
+    <string name="getting_started_privacy_terms_title">AntMonitor Privacy Terms</string>
+
+
+    <!-- Strings for Navigation Drawer -->
+    <string name="antmonitor_id">No ID found</string>
+
+    <!-- Strings for Privacy Report page -->
+    <string name="top_apps">Top Applications</string>
+    <string name="top_apps_description">Displays number of exposures and protection level per app</string>
+    <string name="top_apps_recent">Recent</string>
+    <string name="top_apps_last_week">Last Week</string>
+    <string name="top_apps_last_month">Last Month</string>
+    <string name="privacy_reports_app_name">Application Name</string>
+    <string name="privacy_reports_leaks_count">Exposure count</string>
+
+    <!-- Strings for Privacy Report individual Application History page -->
+    <string name="privacy_application_filter_label">Email</string>
+    <string name="privacy_application_filter_type">Protection: Hashed</string>
+    <string name="privacy_application_filter_value">Privacy Exposure Value</string>
+    <string name="privacy_application_filter_time">1h 30min</string>
+
+    <!-- Strings for Contribute Logs to Research page -->
+    <string name="contribute_history">Contribution History</string>
+    <string name="contribute_history_upload_info">Info about upload</string>
+    <string name="contribute_history_upload_time">1h 30min ago</string>
+
+    <!-- Strings for Getting Started page -->
+    <string name="getting_started_button_next">Next</string>
+    <string name="getting_started_button_back">Back</string>
+    <string name="getting_started_button_start">Start AntMonitor</string>
+    <string name="getting_started_understand_device">Understand Your Device</string>
+    <string name="getting_started_understand_device_detail">AntMonitor gives you visibility into the network activity of your device. See what your device is transmitting behind the scenes.</string>
+    <string name="getting_started_protect">Protect Your Device</string>
+    <string name="getting_started_protect_detail">Track what information is being sent by applications and to which servers. Prevent these privacy exposures with AntMonitor.</string>
+    <string name="getting_started_contribute">Contribute Your Logs</string>
+    <string name="getting_started_contribute_off">Contribute Your Logs (Off)</string>
+    <string name="getting_started_contribute_detail">You can choose to contribute your logs to help improve AntMonitor.</string>
+    <string name="getting_started_contribute_privacy_terms"><u>View Privacy Terms</u></string>
+    <string name="getting_started_does_your_device_leak">Does Your Device Expose Privacy Information?</string>
+    <string name="getting_started_does_your_device_leak_detail">We have created some filters already. You can add more later!</string>
+    <string name="getting_started_contibute_logs">Contribute Logs to Research</string>
+    <string name="getting_started_contibute_logs_detail">Join our community and help improve AntMonitor with logs collected on your device!</string>
+    <string name="getting_started_app">Contribute Logs to Research cont&#8230;</string>
+    <string name="getting_started_app_detail">Select which applications to log</string>
+    <string name="getting_started_learn_more">Learn more</string>
+    <string name="getting_started_learn_more_url">http://antmonitor.calit2.uci.edu</string>
+
+    <!-- Strings for Help Page -->
+    <string name="help_antmonitor_subtitle">Help - FAQ</string>
+    <string name="help_antmonitor_q">What is AntMonitor?</string>
+    <string name="help_antmonitor_a">AntMonitor gives you visibility into the network activity of your device. See what your device is doing behind the scenes.</string>
+    <string name="help_privacy_filters_q">What are Privacy Filters?</string>
+    <string name="help_privacy_filters_a">AntMonitor utilizes Privacy filters to detect sensitive text transmitted out of your device by other apps. This can be a legitimate use by that app or a potential privacy leak. We refer to both cases as "privacy exposure" and we notify the use giving him the option to allow, hash or block the transmutation of the sensitive text. See Privacy Exposure Settings for some predefined global filters and to define  your own application-specific filters. See Privacy Exposure Report for the incidents detected on your phone.</string>
+    <string name="help_contribution_q">Why should I contribute my logs?</string>
+    <string name="help_contribution_a">This feature currently is OFF. No data is collected in this version of the app. In the future, you will be given an option to contribute logs collected on your device for research to improve the functionality that AntMonitor offers to you.</string>
+    <string name="help_performance_q">Does AntMonitor impact the performance of my device?</string>
+    <string name="help_performance_a">AntMonitor is as lean as a VPN-based app can be. It has no impact on throughput (the same as commercial grade VPN) and battery consumption, and does not transmit any data that will use your data plan.</string>
+    <string name="help_creator_q">Who are the Creators of AntMonitor?</string>
+    <string name="help_creator_a">We are a team of researchers at UCI.</string>
+    <string name="help_creator_a_learn_more"><u>Learn more at our site.</u></string>
+
+    <!-- Strings for Menu Options -->
+    <string name="menu_tutorial">Show Tutorial</string>
+    <string name="menu_enable_all_filters">Enable All Filters</string>
+    <string name="menu_disable_all_filters">Disable All Filters</string>
+    <string name="menu_select_all_apps">Select All Apps</string>
+    <string name="menu_deselect_all_apps">Deselect All Apps</string>
+
+    <!-- Strings for misc -->
+    <string name="vpn_rights_needed">Please give VPN permissions for AntMonitor to work.</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+
+</resources>

@@ -1,0 +1,62 @@
+<!--
+  ~  This file is part of AntMonitor <https://athinagroup.eng.uci.edu/projects/antmonitor/>.
+  ~  Copyright (C) 2018 Anastasia Shuba and the UCI Networking Group
+  ~  <https://athinagroup.eng.uci.edu>, University of California, Irvine.
+  ~
+  ~  AntMonitor is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 2 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  AntMonitor is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with AntMonitor. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!-- Provide a general introduction / user guide here -->
+<!--
+    See:
+    http://docs.oracle.com/javase/6/docs/technotes/tools/windows/javadoc.html#overviewcomment
+    http://stackoverflow.com/questions/10381649/custom-index-html-javadoc-page
+-->
+<html>
+<body>
+This is a developer's guide for AntClient. It assumes that you are already familiar with
+the basic goals of the AntMonitor project. If not, please visit the
+<a href="https://athinagroup.eng.uci.edu/projects/antmonitor">project website</a> and see our latest papers.
+
+<h1>Overview</h1>
+<p>
+    AntClient uses <a href="https://uci-networking-group.github.io/AntMonitorExample/">AntMonitorLib</a> to gain
+    access to both real-time traffic and packets captured for off-line analysis. While the library
+    takes care of routing packets, mapping, and logging them, AntClient can focus solely on the
+    analysis side of the data. <br><br>
+
+    <a href="#anteaterclient-block-diagram">Figure 1</a> shows what types
+    of analysis AntClient currently does. The details of each analysis are implemented in the
+    <a href="edu/uci/calit2/anteater/client/android/analysis/package-frame.html">analysis</a> package.
+</p>
+
+<p>
+    The function calls in blue are API calls to the AntMonitorLib. To see their implementation
+    details and the details of intercepting the network traffic, please see the
+    <a href="../antmonitorlib/index.html" target="_blank">
+        AntMonitorLib Developer's Guide
+    </a>.
+</p>
+
+<p> <b>Note:</b> uploading of log files is disabled in public releases of AntMonitor. </p>
+
+<figure id="anteaterclient-block-diagram">
+    <img src="images/client-details.png" alt="Diagram picturing the major components of AntClient" width="760px"/>
+    <figcaption>
+        Fig. 1: AntClient Block Diagram.
+    </figcaption>
+</figure>
+
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!--
+  ~  This file is part of AntMonitor <https://athinagroup.eng.uci.edu/projects/antmonitor/>.
+  ~  Copyright (C) 2018 Anastasia Shuba and the UCI Networking Group
+  ~  <https://athinagroup.eng.uci.edu>, University of California, Irvine.
+  ~
+  ~  AntMonitor is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 2 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  AntMonitor is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with AntMonitor. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!-- Provide a general introduction / user guide here -->
+<!--
+    See:
+    http://docs.oracle.com/javase/6/docs/technotes/tools/windows/javadoc.html#overviewcomment
+    http://stackoverflow.com/questions/10381649/custom-index-html-javadoc-page
+
+    NOTE:
+    Inside code samples, "@" character must be Javadoc-escaped: {@literal @}
+-->
+<html>
+
+<body>
+This document describes and provides examples of how to use AntPCAPLib - a packet capturing
+library for Android.
+
+<h1>Overview</h1>
+
+<p>
+    AntMonitor captures all IP traffic coming and out of the device. By using our library you can
+    control when to start/stop capturing, intercept IP packets, inspect them for strings of interest
+    (DPI), and log them on disk for uploading to
+    your server at a later time.
+</p>
+
+<p>
+    <a href="#diagram">Figure 1</a> shows the system overview. The yellow boxes show which classes
+    are made available within the library for you to use and extend. The rest of the diagram
+    shows how these classes interact with library internals. Below you will find a step-by-step
+    guide on how to use our library.
+</p>
+
+<figure id="diagram">
+    <img src="images/AntMonitor-SDK.png" alt="Diagram picturing the major components of AntPCAPLib" width="760px"/>
+    <figcaption>
+        Fig. 1: System Overview
+    </figcaption>
+</figure>
+
+<h1>Examples</h1>
+
+<h4>Starting/Stopping AntMonitor</h4>
+
+<p>
+    AntMonitor intercepts traffic by establishing an internal VPN connection. This connection is maintained by a
+    VPN service which runs in the background. You can control this service by <em>binding</em> to it. For more information
+    about Bounded Services, refer to the <a href="https://developer.android.com/guide/components/bound-services.html">Android API Guides</a>.
+
+    <br><br>
+    AntPCAPLib allows you to bind and control the VPN service through the
+    <a href="edu/uci/calit2/antmonitor/lib/vpn/VpnController.html">VpnController</a> class. In order to instantiate the VpnController, you need
+    a <a href="https://developer.android.com/reference/android/content/Context.html">Context</a> object that also implements the
+    <a href="edu/uci/calit2/antmonitor/lib/AntMonitorActivity.html">AntMonitorActivity</a> interface.
+    The following snippet shows how to instantiate the VpnController and bind to the VPN service
+    from a typical Android <a href="https://developer.android.com/reference/android/app/Activity.html">Activity</a>:
+</p>
+
+<div style="padding-left: 5%">
+    <pre class="brush:java">
+        public class MainActivity extends AppCompatActivity implements AntMonitorActivity {
+            private VpnController mVpnController;
+
+            {@literal @}Override
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+
+                // Initialize the controller
+                mVpnController = VpnController.getInstance(this);
+            }
+
+            {@literal @}Override
+            protected void onStart() {
+                super.onStart();
+
+                // bind to the VPN service
+                mVpnController.bind();
+            }
+        }
+    </pre>
+</div>
+
+<p>
+    Note that returning from the mVpnController.bind() call does not mean that the binding is finished.
+    When the binding process has finished, the
+    <a href="edu/uci/calit2/antmonitor/lib/AntMonitorActivity.html#onVpnStateChanged-edu.uci.calit2.antmonitor.lib.vpn.VpnState-">
+        onVpnStateChanged(VpnState)</a> callback will be invoked. At this point, you are almost ready
+    to establish the VPN connection.
+
+    <br><br>
+    For security reasons, the Android OS does not allow apps to establish VPN connections without
+    getting user authorization. The following call checks to see if the user has granted VPN rights:
+
+<div style="padding-left: 5%">
+    <pre class="brush:java">
+        // MainActivity is the Activity from the previous code snippet
+        Intent intent = android.net.VpnService.prepare(MainActivity.this);
+    </pre>
+</div>
+
+If the call returns a non-null object, that means the user has not yet granted VPN rights. In
+this case, we must ask the user for VPN rights with the following call:
+
+<div style="padding-left: 5%">
+    <pre class="brush:java">
+        // intent is the intent from the previous code snippet
+        if (intent != null) {
+            // Ask user for VPN rights. If they are granted,
+            // onActivityResult will be called with RESULT_OK
+            startActivityForResult(intent, 0);
+        } else {
+            // VPN rights were granted before - you can attempt a connection (next example)
+        }
+    </pre>
+</div>
+
+<a href="https://developer.android.com/reference/android/app/Activity.html#startActivityForResult(android.content.Intent, int)">
+    startActivityForResult(intent, 0)</a> will create a prompt for the user, asking her for
+VPN rights. If the user agrees, your activity's
+<a href="https://developer.android.com/reference/android/app/Activity.html#onActivityResult(int, int, android.content.Intent)">
+    onActivityResult(int, int, android.content.Intent)</a> method will be invoked. In our case,
+we only care about the second parameter, which indicates whether or not the user agreed.
+If the user agreed, then you can proceed with the VPN connection establishment.
+
+<br><br>
+The following snippet checks if the user agreed, and if so, establishes the connection:
+</p>
+
+<div style="padding-left: 5%">
+    <pre class="brush:java">
+    protected void onActivityResult(int request, int result, Intent data) {
+        // Check if the user granted us rights to VPN
+        if (result == Activity.RESULT_OK) {
+            // If so, we can attempt a connection
+            mVpnController.connect(null, null, null, null);
+        }
+    }
+    </pre>
+</div>
+
+<p>
+    Calling mVpnController.connect(...) does not mean that VPN is connected. The VPN is connected when the
+    <a href="edu/uci/calit2/antmonitor/lib/vpn/VpnState.html#CONNECTED">VpnState.CONNECTED</a>
+    state is received by
+    <a href="edu/uci/calit2/antmonitor/lib/AntMonitorActivity.html#onVpnStateChanged-edu.uci.calit2.antmonitor.lib.vpn.VpnState-">
+        onVpnStateChanged(VpnState)</a>.
+
+    <br><br>
+    You may have noticed that <code>mVpnController.connect(...)</code> takes on 4 parameters.
+    These parameters can be <code>null</code>, or they can be used to pass various objects that process both real-time
+    and off-line traffic. The next two examples illustrate these use cases.
+</p>
+
+<h4>Real-Time (On-line) Traffic Processing</h4>
+
+<p>
+    AntPCAPLib allows you to read, modify, and block packets before they are sent to
+    their intended destinations. To take advantage of this functionality, you simply need to extend
+    either the <a href="edu/uci/calit2/antmonitor/lib/vpn/OutPacketFilter.html">OutPacketFilter</a>
+    or the <a href="edu/uci/calit2/antmonitor/lib/vpn/IncPacketFilter.html">IncPacketFilter</a>
+    class, for outgoing or incoming packets, respectively.
+
+    Within you child class, simply override the
+    <a href="edu/uci/calit2/antmonitor/lib/vpn/PacketFilter.html#acceptIPDatagram-java.nio.ByteBuffer-">
+        acceptIPDatagram(ByteBuffer)</a> method. You can do various processing of the packet inside
+    the <code>acceptIPDatagram(ByteBuffer)</code> function and you can even block packets by
+    returning a <a href="edu/uci/calit2/antmonitor/lib/logging/PacketAnnotation.html">
+    PacketAnnotation</a> that was initialized with <code>allowPacket</code> set to <code>false</code>.
+
+    <br><br>
+    AntPCAPLib also intercepts TLS traffic and decrypts the packets whenever possible.
+    In such cases, the decrypted packet is passed to a packet filter via the
+    <a href="edu/uci/calit2/antmonitor/lib/vpn/PacketFilter.html#acceptDecryptedSSLPacket-java.nio.ByteBuffer-java.lang.String-int-int-short-">
+        acceptDecryptedSSLPacket(...)</a> function call.
+
+    <br><br>
+    <b>Important Note:</b> Decrypted SSL packets are passed to both
+    <a href="edu/uci/calit2/antmonitor/lib/vpn/PacketFilter.html#acceptIPDatagram-java.nio.ByteBuffer-">
+        acceptIPDatagram(ByteBuffer)</a> and
+    <a href="edu/uci/calit2/antmonitor/lib/vpn/PacketFilter.html#acceptDecryptedSSLPacket-java.nio.ByteBuffer-java.lang.String-int-int-short-">
+        acceptDecryptedSSLPacket(...)</a>.
+
+    <br><br>
+    To ensure that the AntMonitor Library uses your filters, you must pass them as arguments to the
+    <a href="edu/uci/calit2/antmonitor/lib/vpn/VpnController.html#connect-edu.uci.calit2.antmonitor.lib.vpn.PacketFilter-edu.uci.calit2.antmonitor.lib.vpn.PacketFilter-edu.uci.calit2.antmonitor.lib.logging.PacketConsumer-edu.uci.calit2.antmonitor.lib.logging.PacketConsumer-">
+        VpnController.connect(...)</a> call.
+
+    <a href="../../ant_sdk_example/app/src/main/java/edu/uci/calit2/antexample/ExamplePacketFilter.java">
+        ExamplePacketFilterOut</a> is an example of an
+    <a href="edu/uci/calit2/antmonitor/lib/vpn/OutPacketFilter.html">OutPacketFilter</a>
+    implementation. You can use this filter by passing it to
+    <code>VpnController</code> like so ("this" is an Activity or some other Context):
+
+<div style="padding-left: 5%">
+    <pre class="brush:java">
+        ExamplePacketFilterOut outFilter = new ExamplePacketFilterOut(this);
+        mVpnController.connect(null, outFilter, null, null);
+    </pre>
+</div>
+
+Note that in the above snippet, no incoming filter is provided.
+
+<br><br>
+<b>Important Note:</b> Although you can map packets to apps and log them inside a
+<code>PacketFilter</code>, we do not recommend that you do so, as it may slow down network
+throughput since these filters act on real-time traffic. Instead, offload any heavy processing
+to implementations of the
+<a href="edu/uci/calit2/antmonitor/lib/logging/PacketConsumer.html">PacketConsumer</a> class.
+See the next example for more details about this class.
+</p>
+
+<h4>Off-line Traffic Processing</h4>
+
+<p>
+    To allow you to perform CPU and/or I/O intensive operations on packets, AntPCAPLib
+    saves all packets to a queue. Elements of the queue are consumed by a different thread so as not
+    to interfere with the main network threads. Whenever an element is available,
+    AntPCAPLib calls
+    <a href="edu/uci/calit2/antmonitor/lib/logging/PacketConsumer.html#consumePacket-edu.uci.calit2.antmonitor.lib.util.PacketDumpInfo-">
+        consumePacket(PacketDumpInfo)</a>. To use this feature, simply extend the
+    <a href="edu/uci/calit2/antmonitor/lib/logging/PacketConsumer.html">PacketConsumer</a> class.
+
+    <br><br>
+    <a href="../../ant_sdk_example/app/src/main/java/edu/uci/calit2/antexample/ExamplePacketConsumer.java">
+        ExamplePacketConsumer</a> is an example of a
+    <code>PacketConsumer</code> implementation. Pass it to
+    <code>VpnController</code> like so:
+
+<div style="padding-left: 5%">
+    <pre class="brush:java">
+        ExamplePacketConsumer incConsumer =
+                new ExamplePacketConsumer(this, TrafficType.INCOMING_PACKETS,
+                                            "userId");
+
+        ExamplePacketConsumer outConsumer =
+                new ExamplePacketConsumer(this, TrafficType.OUTGOING_PACKETS,
+                                            "userId");
+
+        mVpnController.connect(incFilter, outFilter, incConsumer, outConsumer);
+    </pre>
+</div>
+
+Note that in the above snippet, the same <code>PacketConsumer</code> implementation is used for
+both incoming and outgoing packets, but they can be different.
+</p>
+
+<h4>Uploading Logged Data</h4>
+
+<p>
+    If your <code>PacketConsumer</code> uses the
+    <a href="edu/uci/calit2/antmonitor/lib/logging/PacketConsumer.html#log-edu.uci.calit2.antmonitor.lib.util.PacketDumpInfo-edu.uci.calit2.antmonitor.lib.logging.ConnectionValue-">
+        log(PacketDumpInfo, ConnectionValue)</a> function to log packet data in PCAPNG format,
+    you can access these files at any time by calling
+    <a href="edu/uci/calit2/antmonitor/lib/logging/TrafficLogFiles.html#getCompleted-android.content.Context-">
+        TrafficLogFiles.getCompleted(android.content.Context)</a>. You can then upload them to your
+    server, delete them, etc.
+
+    <br><br>
+    If you are using our LogServer code, you can upload the logged files to LogServer by using the
+    <a href="edu/uci/calit2/antmonitor/lib/logging/FileUploader.html">FileUploader</a> class:
+
+<div style="padding-left: 5%">
+    <pre class="brush:java">
+        FileUploader uploader = new FileUploader(context, R.raw.certificate,
+                                        SERVER_ADDRESS, SERVER_SECRET, userID);
+        int failures = uploader.upload();
+        Log.d(TAG, "Upload finished. Number of failed uploads = " + failures);
+    </pre>
+</div>
+
+For security reasons, not all variables are shown in the above snippet. Your server will
+be configured by you, and thus you will have all the information that you need to initialize
+the <code>FileUploader</code>. Key parameters to note:
+
+<ul>
+    <li>R.raw.certificate: the SSL certificate used by your server. You can store it
+        as a raw resource in your app. </li>
+    <li>SERVER_ADDRESS: the address of your server, such as, "https://128.195.185.110:443/"</li>
+    <li>SERVER_SECRET: the apiKey used by your LogServer. </li>
+</ul>
+</p>
+
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<!-- Load the styles and scripts needed for proper code formatting !-->
+<link type="text/css" rel="stylesheet" href="customCSS.css"/>
+<script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js"></script>
+<script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js"></script>
+
+<script type="text/javascript">
+    SyntaxHighlighter.defaults.light = false;
+    SyntaxHighlighter.defaults.gutter = false;
+    SyntaxHighlighter.all();
+</script>
+
+</body>
+</html>

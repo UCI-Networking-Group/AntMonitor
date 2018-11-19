@@ -1,0 +1,42 @@
+#gitignore borrowed from http://stackoverflow.com/a/17803964/1214974
+#built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
+.DS_Store
+
+# Eclipse project files
+.classpath
+.project
+
+# Android Studio
+.idea
+#.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
+.gradle
+build/
+*.so
+*.d
+*.o
+antmonitorlib/documentation/
+antmonitorlib/documentation-dev/
+
+app/src/main/assets/arff/
+app/src/main/assets/model/
+captures/

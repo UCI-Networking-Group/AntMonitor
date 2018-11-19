@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  This file is part of AntMonitor <https://athinagroup.eng.uci.edu/projects/antmonitor/>.
+  ~  Copyright (C) 2018 Anastasia Shuba and the UCI Networking Group
+  ~  <https://athinagroup.eng.uci.edu>, University of California, Irvine.
+  ~
+  ~  AntMonitor is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 2 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  AntMonitor is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with AntMonitor. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_real_time"
+            android:icon="@drawable/ic_timeline_black_24dp"
+            android:title="@string/main_title_real_time" />
+        <item
+            android:id="@+id/nav_privacy"
+            android:icon="@drawable/search_magnifying_glass"
+            android:title="@string/main_title_privacy" />
+        <item
+            android:id="@+id/nav_contribute"
+            android:icon="@drawable/ic_cloud_upload_black_24dp"
+            android:title="@string/main_title_contribute" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help_outline_black_24dp"
+            android:title="@string/main_title_help" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_info_outline_black_24dp"
+            android:title="@string/main_title_about" />
+        <item android:title="@string/navigation_settings">
+            <menu>
+                <item
+                    android:checkable="true"
+                    android:id="@+id/nav_privacy_settings"
+                    android:icon="@drawable/ic_shield_settings"
+                    android:title="@string/main_title_privacy_settings" />
+                <item
+                    android:checkable="true"
+                    android:id="@+id/nav_contribute_settings"
+                    android:icon="@drawable/ic_network_settings"
+                    android:title="@string/main_title_contribute_settings" />
+            </menu>
+        </item>
+    </group>
+
+
+
+</menu>
