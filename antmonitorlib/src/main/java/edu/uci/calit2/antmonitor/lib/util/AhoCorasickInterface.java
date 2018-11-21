@@ -23,7 +23,6 @@ import java.util.ArrayList;
 
 /**
  * An interface for accessing the C library implementing the Aho-Corasick algorithm for DPI
- * NOTE: currently disabled
  *
  * @author Anastasia Shuba
  */
@@ -61,7 +60,6 @@ public class AhoCorasickInterface {
     /**
      * Perform DPI on the given packet, searching for strings that were passed in
      * previously in the init method
-     * NOTE: Currently this method returns an empty list
      *
      * @param packet a {@link ByteBuffer} containing the packet
      * @param size size of the packet

@@ -12,7 +12,7 @@ android {
         versionName "1.0"
         ndk {
             moduleName "antMonitorNative"
-            ldLibs "log"
+            abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
         }
     }
     buildTypes {
@@ -20,6 +20,11 @@ android {
             // Disable obfuscation by default. Re-enable as needed.
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/cpp/Android.mk'
         }
     }
 }
@@ -39,4 +44,11 @@ dependencies {
         exclude module: 'commons-analysis'
     }
     compile 'com.google.code.gson:gson:2.8.0'
+}
+
+android {
+    packagingOptions {
+        // Avoid duplicate file errors in app packaging
+        exclude 'META-INF/LICENSE'
+    }
 }

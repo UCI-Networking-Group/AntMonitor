@@ -36,6 +36,7 @@ build/
 *.o
 antmonitorlib/documentation/
 antmonitorlib/documentation-dev/
+antmonitorlib/.externalNativeBuild/
 
 app/src/main/assets/arff/
 app/src/main/assets/model/

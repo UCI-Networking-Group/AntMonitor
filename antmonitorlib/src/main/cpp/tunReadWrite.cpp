@@ -21,6 +21,10 @@
 #include <unistd.h>
 #include <stdio.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Read from tun */
 jint Java_edu_uci_calit2_antmonitor_lib_vpn_TunNativeInterface_pollRead
 (JNIEnv *env, jobject thisObj, jint fd, jlong timeout, jobject buffer, jint bufferHeaderSize) {
@@ -42,8 +46,8 @@ jint Java_edu_uci_calit2_antmonitor_lib_vpn_TunNativeInterface_pollRead
     } else {
         if (arrayfds[0].revents & POLLIN) { // there is data to read
 
-            char *buf = (char*) (*env)->GetDirectBufferAddress(env, buffer);
-            long capacity = (long) (*env)->GetDirectBufferCapacity(env, buffer);
+            char *buf = (char*) env->GetDirectBufferAddress(buffer);
+            long capacity = (long) env->GetDirectBufferCapacity(buffer);
 
             // Sanity check
             int headerSize = (int) bufferHeaderSize;
@@ -74,7 +78,11 @@ jint Java_edu_uci_calit2_antmonitor_lib_vpn_TunNativeInterface_pollRead
 jint Java_edu_uci_calit2_antmonitor_lib_vpn_TunNativeInterface_write
 (JNIEnv *env, jobject thisObj, jint fd, jobject buffer, jint length) {
 
-    char *buf = (char*) (*env)->GetDirectBufferAddress(env, buffer);
+    char *buf = (char*) env->GetDirectBufferAddress(buffer);
     int bytesWritten = write((int) fd, buf, (size_t) length);
     return bytesWritten;
 }
+
+#ifdef __cplusplus
+}
+#endif
