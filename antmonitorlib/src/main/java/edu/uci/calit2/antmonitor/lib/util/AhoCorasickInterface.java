@@ -63,7 +63,7 @@ public class AhoCorasickInterface {
      *
      * @param packet a {@link ByteBuffer} containing the packet
      * @param size size of the packet
-     * @return a list of strings found. Each string is followed by the ending position
+     * @return a list of strings found. Each string is followed by the starting position
      * of where it was found in the packet.
      */
     public synchronized ArrayList<String> search(ByteBuffer packet, int size) {

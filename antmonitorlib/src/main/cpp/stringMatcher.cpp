@@ -61,9 +61,6 @@ Java_edu_uci_calit2_antmonitor_lib_util_AhoCorasickInterface_init(
     for (unsigned int i = 0; i < numStrs; i++) {
         jstring string = (jstring) env->GetObjectArrayElement(jstringArray, i);
         const char *cstring = env->GetStringUTFChars(string, 0);
-        // Don't forget to call `ReleaseStringUTFChars` when you're done.
-        // Note: this is not being done now since then we can't access the string
-        // upon finding the pattern
 
         trie.insert(cstring);
         //LOGD("Successfully added pattern  '%s'\n", cstring);
@@ -100,8 +97,7 @@ jobject search (JNIEnv *env, const char *nativeString, int length)
     // Clear existing list
     env->CallVoidMethod(list, list_method_clear);
 
-    auto result = trie.parse_text(nativeString);
-
+    auto result = trie.parse_text(nativeString, length);
     for (const auto &item : result) {
         //LOGD("found: %s at %d", item.get_keyword().c_str(), item.get_end());
 
@@ -111,8 +107,7 @@ jobject search (JNIEnv *env, const char *nativeString, int length)
         env->DeleteLocalRef(key);
 
         // Add the position the string was found at
-        // TODO: with the new library, we can directly return starting position
-        snprintf(NUM_BUF, NUM_BUF_SIZE, "%ld", item.get_end());
+        snprintf(NUM_BUF, NUM_BUF_SIZE, "%ld", item.get_start());
         key = env->NewStringUTF(NUM_BUF);
         env->CallBooleanMethod(list, list_method_add, key);
         env->DeleteLocalRef(key);

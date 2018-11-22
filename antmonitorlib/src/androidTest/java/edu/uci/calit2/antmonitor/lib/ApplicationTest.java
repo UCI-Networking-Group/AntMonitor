@@ -38,19 +38,16 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         bb.put(packetOneStr.getBytes());
         foundStrs = AhoCorasickInterface.getInstance().search(bb, bb.position());
         assertEquals(2, foundStrs.size());
-        assertEquals(foundStrs.get(0), strsOfInterest[0]);
-        assertEquals(Integer.parseInt(foundStrs.get(1)),
-                packetOneStr.indexOf(strsOfInterest[0]) + (strsOfInterest[0].length() - 1));
+        assertEquals(strsOfInterest[0], foundStrs.get(0));
+        assertEquals(packetOneStr.indexOf(strsOfInterest[0]), Integer.parseInt(foundStrs.get(1)));
 
         bb.position(0);
         bb.put(packetTwoStr.getBytes());
         foundStrs = AhoCorasickInterface.getInstance().search(bb, bb.position());
         assertEquals(4, foundStrs.size());
-        assertEquals(foundStrs.get(0), strsOfInterest[0]);
-        assertEquals(Integer.parseInt(foundStrs.get(1)),
-                packetTwoStr.indexOf(strsOfInterest[0]) + (strsOfInterest[0].length() - 1));
-        assertEquals(foundStrs.get(2), strsOfInterest[1]);
-        assertEquals(Integer.parseInt(foundStrs.get(3)),
-                packetTwoStr.indexOf(strsOfInterest[1]) + (strsOfInterest[1].length() - 1));
+        assertEquals(strsOfInterest[0], foundStrs.get(0));
+        assertEquals(packetTwoStr.indexOf(strsOfInterest[0]), Integer.parseInt(foundStrs.get(1)));
+        assertEquals(strsOfInterest[1], foundStrs.get(2));
+        assertEquals(packetTwoStr.indexOf(strsOfInterest[1]), Integer.parseInt(foundStrs.get(3)));
     }
 }

@@ -367,7 +367,7 @@ public class InspectorPacketFilter extends OutPacketFilter {
      * Replaces the given PII string. Changes position of the packet buffer
      * @param piiLabel the label of the leaking PII
      * @param piiLen the length of the leaking PII value
-     * @param index ending position of the pii in the packet
+     * @param index starting position of the pii in the packet
      * @param packetBuff ByteBuffer representation of the packet
      */
     private void replaceString(String piiLabel, int piiLen, int index, ByteBuffer packetBuff) {
@@ -386,9 +386,7 @@ public class InspectorPacketFilter extends OutPacketFilter {
             // TODO: other default strings are more difficult to fake (email)
         }
 
-        // The Aho-Corasick gives the ending position of the found string
-        // adjust index accordingly
-        putNewString(index - piiLen, replacement, packetBuff);
+        putNewString(index, replacement, packetBuff);
     }
 
     /**

@@ -1,4 +1,6 @@
 /*
+* Copyright (C) 2018 Anastasia Shuba and the UCI Networking Group
+* <https://athinagroup.eng.uci.edu>, University of California, Irvine.
 * Copyright (C) 2018 Christopher Gilbert.
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -404,7 +406,7 @@ namespace aho_corasick {
 
 		public:
 			config()
-				: d_allow_overlaps(true)
+				: d_allow_overlaps(false)
 				, d_only_whole_words(false)
 				, d_case_insensitive(false) {}
 
@@ -465,7 +467,7 @@ namespace aho_corasick {
 			}
 		}
 
-		token_collection tokenise(string_type text) {
+/*		token_collection tokenise(string_type text) {
 			token_collection tokens;
 			auto collected_emits = parse_text(text);
 			size_t last_pos = -1;
@@ -480,14 +482,15 @@ namespace aho_corasick {
 				tokens.push_back(create_fragment(typename token_type::emit_type(), text, last_pos));
 			}
 			return token_collection(tokens);
-		}
+		}*/
 
-		emit_collection parse_text(string_type text) {
+		emit_collection parse_text(const char *text, int text_len) {
 			check_construct_failure_states();
 			size_t pos = 0;
 			state_ptr_type cur_state = d_root.get();
 			emit_collection collected_emits;
-			for (auto c : text) {
+			for (int i = 0; i < text_len; i++) {
+				int c = text[i];
 				if (d_config.is_case_insensitive()) {
 					c = std::tolower(c);
 				}
@@ -495,9 +498,9 @@ namespace aho_corasick {
 				store_emits(pos, cur_state, collected_emits);
 				pos++;
 			}
-			if (d_config.is_only_whole_words()) {
+/*			if (d_config.is_only_whole_words()) {
 				remove_partial_matches(text, collected_emits);
-			}
+			}*/
 			if (!d_config.is_allow_overlaps()) {
 				interval_tree<emit_type> tree(typename interval_tree<emit_type>::interval_collection(collected_emits.begin(), collected_emits.end()));
 				auto tmp = tree.remove_overlaps(collected_emits);
