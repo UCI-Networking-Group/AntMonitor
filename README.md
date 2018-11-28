@@ -4,7 +4,25 @@ system for Android. For an overview of the project, please visit
 the project
 [website](http://athinagroup.eng.uci.edu/projects/antmonitor/).
 
-### Running the AntMonitor App
+* The core capabilities of AntMonitor to intercept and inspect outgoing
+packets are made available as a library - see the
+[Using the AntMonitor Library](#using-the-antmonitor-library) section.
+* For getting started with the AntMonitor app and library development, see
+[Running the AntMonitor App](#running-the-antmonitor-app).
+
+### License
+AntMonitor is licensed under
+[GPLv2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
+
+## 1. Using the AntMonitor Library
+The packet interception and inspection capabilities of AntMonitor have
+also been packaged as an Android library. If you wish to simply use
+that capability and write your own app from scratch, please refer
+to our other GitHub Project -
+[AntMonitorExample](https://github.com/UCI-Networking-Group/AntMonitorExample).
+
+
+## 2. Running the AntMonitor App
 For the rest of the document we will refer to the directory to which
 you have cloned the repo as `CODE_ROOT`.
 
@@ -15,15 +33,6 @@ you have cloned the repo as `CODE_ROOT`.
 Android NDK installation paths, respectively.
 * Click the "Run App" button within Android Studio to run the app on a
 connected Android device or emulator.
-
-
-### Using the AntMonitor Library
-The packet interception and inspection capabilities of AntMonitor have
-also been packaged as an Android library. If you wish to simply use
-that capability and write your own app from scratch, please refer
-to our other GitHub Project -
-[AntMonitorExample](https://github.com/UCI-Networking-Group/AntMonitorExample).
-
 
 ### Documentation
 The Javadoc sits in the `documentation` directory of the repo and is
@@ -52,3 +61,7 @@ follows:
   year={2016}
 }
 ```
+
+We also encourage you to provide us (<antmonitor.uci@gmail.com>) with a
+link to your publication. We use this information in reports to our
+funding agencies.
