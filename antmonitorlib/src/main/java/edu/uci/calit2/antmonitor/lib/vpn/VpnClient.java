@@ -18,34 +18,41 @@
  */
 package edu.uci.calit2.antmonitor.lib.vpn;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.ParcelFileDescriptor;
 import android.os.RemoteException;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.uci.calit2.antmonitor.lib.R;
 import edu.uci.calit2.antmonitor.lib.logging.PacketConsumer;
+import edu.uci.calit2.antmonitor.lib.logging.PacketLogQueue;
 import edu.uci.calit2.antmonitor.lib.logging.PacketProcessor;
 import edu.uci.calit2.antmonitor.lib.logging.PacketQueueReader;
-import edu.uci.calit2.antmonitor.lib.logging.PacketLogQueue;
 
 /**
  * This class is responsible for establishing and maintaining the VPN connection.
@@ -64,6 +71,8 @@ public class VpnClient extends android.net.VpnService {
 
     static final long STARTING_RECONNECT_DELAY_MILLIS = 5000;
 
+    final String CHANNEL_ID = "ant_channel_01";
+
     /**
      * Extra key used when launching a {@link VpnClient} via
      * {@link Context#startService(Intent)}.
@@ -72,7 +81,7 @@ public class VpnClient extends android.net.VpnService {
      * invocation.
      */
     static final String EXTRA_CONNECT_ON_STARTUP = "edu.uci.calit2.anteater.EXTRA_CONNECT_ON_STARTUP";
-    
+
     private static final String TAG = VpnClient.class.getSimpleName();
 
     /** IP address used for the TUN*/
@@ -89,6 +98,27 @@ public class VpnClient extends android.net.VpnService {
 
     private static IncPacketFilter mIncPacketFilter;
     private static OutPacketFilter mOutPacketFilter;
+
+    private static List<String> excludedApps = new ArrayList<>();
+    private static String DNS_SERVER = "8.8.8.8";
+
+    static String getDnsServer () {
+        return DNS_SERVER;
+    }
+
+    static void setDnsServer (String dnsServer) {
+        DNS_SERVER = dnsServer;
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    static void setExcludedApps (List<String> excludedApps) {
+        VpnClient.excludedApps = excludedApps;
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    static void clearExcludedApps () {
+        VpnClient.excludedApps.clear();
+    }
 
     /**
      * Delay in milliseconds before attempting to reconnect.
@@ -211,7 +241,8 @@ public class VpnClient extends android.net.VpnService {
         startForeground(VPN_FOREGROUND_ID, buildVpnStateNotification());
 
         // Did client specify that we should connect the VPN right away?
-        boolean autoConnect = intent.getBooleanExtra(EXTRA_CONNECT_ON_STARTUP, false);
+        boolean autoConnect = false;
+        if (intent != null) autoConnect = intent.getBooleanExtra(EXTRA_CONNECT_ON_STARTUP, false);
         if (autoConnect) {
             Log.d(TAG, "Automatically connecting VPN as part of onStartCommand...");
             //DebugFile.AppendToDebugFile("Automatically connecting VPN as part of onStartCommand...");
@@ -271,9 +302,19 @@ public class VpnClient extends android.net.VpnService {
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 
             // Third: update the ongoing VPN state notification.
-            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(VPN_FOREGROUND_ID, buildVpnStateNotification());
+            NotificationManager service =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            service.notify(VPN_FOREGROUND_ID, buildVpnStateNotification());
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private void createNotificationChannel() {
+        NotificationChannel chan = new NotificationChannel(CHANNEL_ID,
+                getString(R.string.notification_channel_name), NotificationManager.IMPORTANCE_NONE);
+        NotificationManager service =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        service.createNotificationChannel(chan);
     }
 
     /**
@@ -366,7 +407,18 @@ public class VpnClient extends android.net.VpnService {
         builder.addRoute("0.0.0.0", 0);
 
         // Use Google's DNS server
-        builder.addDnsServer("8.8.8.8");
+        builder.addDnsServer(DNS_SERVER);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            for (String excludedApp: excludedApps) {
+                try {
+                    builder.addDisallowedApplication(excludedApp);
+                } catch (PackageManager.NameNotFoundException ex) {
+                    //
+                }
+            }
+        }
+
 
         // Create a new interface using the builder and save the parameters.
         ParcelFileDescriptor tunInterface = null;
@@ -703,16 +755,18 @@ public class VpnClient extends android.net.VpnService {
      */
     private Notification buildVpnStateNotification() {
         //TODO (library modularization) - allow them to pass image to display?
-        Intent notificationIntent = new Intent(this, VpnClient.class);
-        notificationIntent.setAction(VPN_ACTION_NOTIFICATION);
-//        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        Intent notificationIntent = new Intent(VPN_ACTION_NOTIFICATION);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 notificationIntent, 0);
 
         Bitmap icon = BitmapFactory.decodeResource(getResources(),
                 R.mipmap.ic_launcher);
 
-        NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            createNotificationChannel();
+        NotificationCompat.Builder notifBuilder =
+                new NotificationCompat.Builder(this, CHANNEL_ID);
         notifBuilder.setContentTitle(getResources().getString(R.string.notification_title_vpnservice));
         notifBuilder.setSmallIcon(R.mipmap.shield);
         notifBuilder.setLargeIcon(Bitmap.createScaledBitmap(icon, 128, 128, false));

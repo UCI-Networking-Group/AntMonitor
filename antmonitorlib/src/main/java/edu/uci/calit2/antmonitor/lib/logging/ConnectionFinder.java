@@ -18,6 +18,10 @@
  */
 package edu.uci.calit2.antmonitor.lib.logging;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -27,10 +31,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.util.Log;
 
 /**
  * Keeps a mapping of open TCP and UDP connections to apps responsible for them, using the

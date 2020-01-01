@@ -28,14 +28,12 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.LinkedList;
 
-
 import edu.uci.calit2.antmonitor.lib.logging.ConnectionValue;
 import edu.uci.calit2.antmonitor.lib.logging.PacketProcessor;
 import edu.uci.calit2.antmonitor.lib.util.IpDatagram;
-import edu.uci.calit2.antmonitor.lib.util.Protocol;
 import edu.uci.calit2.antmonitor.lib.util.TCPPacket;
-import edu.uci.calit2.antmonitor.lib.vpn.VPNUtils.ChangeRequest;
 import edu.uci.calit2.antmonitor.lib.vpn.ForwarderManager.Logg;
+import edu.uci.calit2.antmonitor.lib.vpn.VPNUtils.ChangeRequest;
 
 /**
  * Maintains an external socket connection to send and receive TCP data.
@@ -43,7 +41,7 @@ import edu.uci.calit2.antmonitor.lib.vpn.ForwarderManager.Logg;
  *
  * @author Anh Le
  */
-class TCPForwarder {
+public class TCPForwarder {
     /** Source address and port number of the flow being routed by this Forwarder */
     VPNUtils.Tuple mSrc;
 

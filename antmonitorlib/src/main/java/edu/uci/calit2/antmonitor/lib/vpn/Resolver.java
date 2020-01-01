@@ -24,9 +24,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import org.sandrob.bouncycastle.asn1.ASN1EncodableVector;
-import org.sandrob.bouncycastle.asn1.DEREncodableVector;
-import org.sandrob.bouncycastle.asn1.x509.GeneralName;
 import org.sandrop.webscarab.plugin.proxy.SiteData;
 import org.sandroproxy.utils.PreferenceUtils;
 
@@ -36,15 +33,11 @@ import java.nio.channels.SocketChannel;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;

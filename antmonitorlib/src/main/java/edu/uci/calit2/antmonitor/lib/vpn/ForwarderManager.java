@@ -18,6 +18,14 @@
  */
 package edu.uci.calit2.antmonitor.lib.vpn;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.net.VpnService;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.ParcelFileDescriptor;
+import android.util.Log;
+
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -40,14 +48,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.VpnService;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.ParcelFileDescriptor;
-import android.util.Log;
-
 import edu.uci.calit2.antmonitor.lib.logging.PacketAnnotation;
 import edu.uci.calit2.antmonitor.lib.logging.PacketLogQueue;
 import edu.uci.calit2.antmonitor.lib.util.IpDatagram;
@@ -56,9 +56,9 @@ import edu.uci.calit2.antmonitor.lib.util.TCPPacket;
 import edu.uci.calit2.antmonitor.lib.util.TCPReassemblyInfo;
 import edu.uci.calit2.antmonitor.lib.util.UDPPacket;
 import edu.uci.calit2.antmonitor.lib.vpn.VPNUtils.ChangeRequest;
-import edu.uci.calit2.antmonitor.lib.vpn.VPNUtils.Tuple;
 import edu.uci.calit2.antmonitor.lib.vpn.VPNUtils.DataWriteToNet;
 import edu.uci.calit2.antmonitor.lib.vpn.VPNUtils.TCPState;
+import edu.uci.calit2.antmonitor.lib.vpn.VPNUtils.Tuple;
 
 
 /**
@@ -126,7 +126,7 @@ import edu.uci.calit2.antmonitor.lib.vpn.VPNUtils.TCPState;
  *
  * @author Anh Le, Anastasia Shuba
  */
-class ForwarderManager {
+public class ForwarderManager {
 
     private static final String TAG = ForwarderManager.class.getSimpleName();
     static final boolean mVerboseLogging = false;

@@ -25,9 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
-import org.sandrop.webscarab.plugin.proxy.SSLSocketFactoryFactory;
 import org.sandrop.webscarab.plugin.proxy.SiteData;
-import org.sandroproxy.utils.DNSProxy;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,24 +37,20 @@ import java.io.Writer;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
 import edu.uci.calit2.antmonitor.lib.logging.ConnectionValue;
 import edu.uci.calit2.antmonitor.lib.logging.PacketProcessor;
-import edu.uci.calit2.antmonitor.lib.util.Protocol;
 
 /**
  * Adopted from PrivacyGuard: https://bitbucket.org/Near/privacyguard/src

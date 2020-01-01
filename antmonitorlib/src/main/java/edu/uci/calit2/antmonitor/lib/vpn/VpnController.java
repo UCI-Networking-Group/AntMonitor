@@ -18,6 +18,7 @@
  */
 package edu.uci.calit2.antmonitor.lib.vpn;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -25,11 +26,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import edu.uci.calit2.antmonitor.lib.AntMonitorActivity;
 import edu.uci.calit2.antmonitor.lib.logging.PacketConsumer;
@@ -163,14 +166,37 @@ public class VpnController {
                                            OutPacketFilter outFilter,
                                            PacketConsumer incPacketConsumer,
                                            PacketConsumer outPacketConsumer) {
-
         VpnClient.prepareVPNconnection(incFilter, outFilter, incPacketConsumer, outPacketConsumer);
         Intent intent = new Intent(context, VpnClient.class);
-        // Specify that the servic should immediately establish the connection
+        // Specify that the service should immediately establish the connection
         intent.putExtra(VpnClient.EXTRA_CONNECT_ON_STARTUP, true);
-        context.startService(intent);
+
+        // TODO: Re-enabling on restart does not work by this method on Android 10. Why?
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            //ContextCompat.startForegroundService(context, intent);
+            //context.startForegroundService(intent);
+        } else {
+            context.startService(intent);
+        }
     }
 
+    static String getDnsServer () {
+        return VpnClient.getDnsServer();
+    }
+
+    static void setDnsServer (String dnsServer) {
+        VpnClient.setDnsServer(dnsServer);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void setExcludedApps(List<String> excludedApps) {
+        VpnClient.setExcludedApps(excludedApps);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void clearExcludedApps() {
+        VpnClient.clearExcludedApps();
+    }
 
     /** Disconnects the VPN if we are connected. Otherwise, nothing happens. */
     public void disconnect() {
@@ -188,6 +214,23 @@ public class VpnController {
     public static void setSSLBumpingEnabled(Context context, boolean enabled)
             throws IllegalStateException {
         ForwarderManager.setSSLBumpingEnabled(context, enabled);
+    }
+
+    /**
+     * @param enabled enabled pass {@code true} to enable DNS cache, and
+     * pass {@code false} otherwise
+     */
+    public static void setDnsCacheEnabled(boolean enabled) {
+        ForwarderManager.KEEP_DNS_CACHE = enabled;
+    }
+
+    /**
+     * Lookup hostname in DNS cache
+     * @param address IP address to resolve
+     * @return Resolved IP address
+     */
+    public static String retrieveHostname(String address) {
+        return ForwarderManager.mDNScache.get(address);
     }
 
     /** @return {@code true} if SSL bumping is currently enabled, and {@code false} otherwise */

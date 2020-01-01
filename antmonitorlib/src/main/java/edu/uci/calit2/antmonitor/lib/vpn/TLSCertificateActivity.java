@@ -27,19 +27,12 @@ import android.os.Bundle;
 import android.security.KeyChain;
 import android.util.Log;
 
-import org.sandrop.webscarab.plugin.proxy.SSLSocketFactoryFactory;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.UnrecoverableEntryException;
-import java.util.Date;
 import java.util.Enumeration;
 
 import javax.security.cert.CertificateEncodingException;

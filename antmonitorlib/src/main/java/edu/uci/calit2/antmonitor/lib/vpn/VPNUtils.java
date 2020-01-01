@@ -20,7 +20,6 @@ package edu.uci.calit2.antmonitor.lib.vpn;
 
 import android.os.Looper;
 
-import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.channels.Channel;
 

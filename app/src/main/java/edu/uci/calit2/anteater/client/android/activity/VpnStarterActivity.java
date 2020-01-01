@@ -23,9 +23,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import edu.uci.calit2.anteater.R;
-import edu.uci.calit2.anteater.client.android.analysis.AnalysisHelper;
-import edu.uci.calit2.anteater.client.android.database.PrivacyDB;
 import edu.uci.calit2.antmonitor.lib.logging.PacketConsumer;
 import edu.uci.calit2.antmonitor.lib.vpn.IncPacketFilter;
 import edu.uci.calit2.antmonitor.lib.vpn.OutPacketFilter;
