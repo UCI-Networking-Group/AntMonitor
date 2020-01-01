@@ -19,21 +19,10 @@
 package edu.uci.calit2.antmonitor.lib.vpn;
 
 import android.content.Context;
-import android.util.Log;
-
-import org.sandrob.bouncycastle.crypto.digests.LongDigest;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import edu.uci.calit2.antmonitor.lib.logging.ConnectionValue;
 import edu.uci.calit2.antmonitor.lib.logging.PacketProcessor;
-import edu.uci.calit2.antmonitor.lib.util.IpDatagram;
-import edu.uci.calit2.antmonitor.lib.util.Protocol;
 
 
 /**

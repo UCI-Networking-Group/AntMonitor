@@ -18,7 +18,6 @@
  */
 package edu.uci.calit2.antmonitor.lib.logging;
 
-import edu.uci.calit2.antmonitor.lib.logging.PacketConsumer;
 import edu.uci.calit2.antmonitor.lib.util.PacketDumpInfo;
 
 /**

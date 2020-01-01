@@ -19,7 +19,6 @@
 package edu.uci.calit2.antmonitor.lib.logging;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.UUID;
 

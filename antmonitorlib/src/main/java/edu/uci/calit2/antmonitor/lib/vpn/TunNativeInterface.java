@@ -18,8 +18,6 @@
  */
 package edu.uci.calit2.antmonitor.lib.vpn;
 
-import android.util.Log;
-
 import java.nio.ByteBuffer;
 
 /**

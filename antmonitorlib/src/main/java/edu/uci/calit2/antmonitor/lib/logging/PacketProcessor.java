@@ -20,6 +20,7 @@ package edu.uci.calit2.antmonitor.lib.logging;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.util.Pair;
 
 import edu.uci.calit2.antmonitor.lib.logging.ConnectionValue.MappingErrors;
@@ -37,6 +38,7 @@ import edu.uci.calit2.antmonitor.lib.util.TCPPacket;
  * @author Anastasia Shuba
  */
 public class PacketProcessor {
+    private String TAG = PacketProcessor.class.getSimpleName();
 
     /*
     Notes on synchronization in this class:
@@ -146,8 +148,13 @@ public class PacketProcessor {
                 //Log.d(TAG, "Matched " + srcIp);
             } else {
                 // No match. Re-map and try again.
-                //Log.d(TAG, "No match for " + connKey);
-                mConnFinder.findConnections();
+                //Log.d(TAG, "No match for " + connKey
+                if (android.os.Build.VERSION.SDK_INT <= 28) {
+                  mConnFinder.findConnections();
+                } else {
+	                Log.e(TAG, "This method does not work on Android 10 and higher." +
+                            "Resolve connection with connectivityManager.getConnectionOwnerUid instead, see: https://github.com/OxfordHCC/tracker-control-android/blob/c1f3350412e81a518fe1c402cf052aa0b1b06c63/app/src/main/java/net/kollnig/missioncontrol/Common.java#L147.");
+                }
                 connVal = mConnFinder.getConnection(srcPort);
                 if (connVal != null) {
                     return connVal;

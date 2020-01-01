@@ -292,6 +292,10 @@ public class TCPPacket {
         return false;
     }
 
+    public static boolean isClientHello(byte[] packet) {
+        return isClientHello(packet, 0);
+    }
+
     public static String extractServerNameFromClientHello(byte[] packet, int dataOffset) {
         String serverName = null;
         int index = dataOffset;

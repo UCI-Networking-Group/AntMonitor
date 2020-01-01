@@ -21,7 +21,6 @@ package edu.uci.calit2.antmonitor.lib.vpn;
 
 import android.util.Log;
 
-import org.sandrop.webscarab.plugin.proxy.SSLSocketFactoryFactory;
 import org.sandrop.webscarab.plugin.proxy.SiteData;
 
 import java.io.IOException;
@@ -35,7 +34,6 @@ import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.net.ssl.HandshakeCompletedListener;

@@ -33,6 +33,12 @@ you have cloned the repo as `CODE_ROOT`.
 Android NDK installation paths, respectively.
 * Click the "Run App" button within Android Studio to run the app on a
 connected Android device or emulator.
+* If you get the error "Gradle sync failed: No toolchains found in the NDK toolchains folder for ABI with prefix: mips64el-linux-android", run
+```bash
+cd $ANDROID_SDK_ROOT/ndk-bundle/toolchains
+ln -s aarch64-linux-android-4.9 mips64el-linux-android
+ln -s arm-linux-androideabi-4.9 mipsel-linux-android
+```
 
 ### Documentation
 The Javadoc sits in the `documentation` directory of the repo and is

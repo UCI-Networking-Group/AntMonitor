@@ -20,13 +20,11 @@ package edu.uci.calit2.antmonitor.lib.vpn;
 
 import android.content.Context;
 
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 
+import edu.uci.calit2.antmonitor.lib.logging.ConnectionValue;
 import edu.uci.calit2.antmonitor.lib.logging.PacketAnnotation;
 import edu.uci.calit2.antmonitor.lib.logging.PacketProcessor;
-import edu.uci.calit2.antmonitor.lib.logging.ConnectionValue;
-
 import edu.uci.calit2.antmonitor.lib.logging.PacketProcessor.TrafficType;
 import edu.uci.calit2.antmonitor.lib.util.IpDatagram;
 import edu.uci.calit2.antmonitor.lib.util.Protocol;
