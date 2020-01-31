@@ -5,8 +5,7 @@
  *
  *  AntMonitor is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
- *  (at your option) any later version.
+ *  the Free Software Foundation, version 2 of the License.
  *
  *  AntMonitor is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -242,26 +241,25 @@ public class VpnController {
      * Add domain/app combos in the provided stream to a list of domain/apps that should not
      * attempt TLS interception. The provided JSON stream should be of the following format: <br>
             <pre>
-             {
-                 "pinnedCombinations": [
-                     {
-                         "packageName": "com.android.providers.downloads",
-                         "domains": ["*.google.com"]
-                     },
+             [
+                 {
+                     "packageName": "com.android.providers.downloads",
+                     "domains": ["*.google.com"]
+                 },
 
-                     {
-                         "packageName": "org.mozilla.firefox",
-                         "domains": ["*.media.mozilla.com", "twitter.com"]
-                     }
-                 ]
-             }
+                 {
+                     "packageName": "org.mozilla.firefox",
+                     "domains": ["*.media.mozilla.com", "twitter.com"]
+                 }
+             ]
             </pre>
      Invoke this function every time you connect to VPN.
      * @param jsonStream the stream to read domain/app combos from. Callers must close the stream.
-     * @throws IOException
+     * @throws IOException if the provided JSON could not be parsed correctly
      */
     public static void addPinnedDomains(InputStream jsonStream) throws IOException {
-        TLSProxyServer.addPinnedCNs(jsonStream);
+        if (!TLSProxyServer.addPinnedCNs(jsonStream))
+            throw new IOException("Invalid JSON format. Please consult the library documentation.");
     }
 
     /** Convenience method for checking Internet connectivity

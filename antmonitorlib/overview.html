@@ -5,8 +5,7 @@
   ~
   ~  AntMonitor is free software: you can redistribute it and/or modify
   ~  it under the terms of the GNU General Public License as published by
-  ~  the Free Software Foundation, either version 2 of the License, or
-  ~  (at your option) any later version.
+  ~  the Free Software Foundation, version 2 of the License.
   ~
   ~  AntMonitor is distributed in the hope that it will be useful,
   ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,9 +18,8 @@
 
 <!-- Provide a general introduction / user guide here -->
 <!--
-    See:
-    http://docs.oracle.com/javase/6/docs/technotes/tools/windows/javadoc.html#overviewcomment
-    http://stackoverflow.com/questions/10381649/custom-index-html-javadoc-page
+    This is the overview of AntMonitor library API.
+    Linked in AntExample: https://uci-networking-group.github.io/AntMonitorExample/
 
     NOTE:
     Inside code samples, "@" character must be Javadoc-escaped: {@literal @}
@@ -261,7 +259,7 @@ Note that in the above snippet, the same <code>PacketConsumer</code> implementat
 both incoming and outgoing packets, but they can be different.
 </p>
 
-<h4>Uploading Logged Data</h4>
+<h4>Accessing Logged Data</h4>
 
 <p>
     If your <code>PacketConsumer</code> uses the
@@ -271,30 +269,7 @@ both incoming and outgoing packets, but they can be different.
     <a href="edu/uci/calit2/antmonitor/lib/logging/TrafficLogFiles.html#getCompleted-android.content.Context-">
         TrafficLogFiles.getCompleted(android.content.Context)</a>. You can then upload them to your
     server, delete them, etc.
-
     <br><br>
-    If you are using our LogServer code, you can upload the logged files to LogServer by using the
-    <a href="edu/uci/calit2/antmonitor/lib/logging/FileUploader.html">FileUploader</a> class:
-
-<div style="padding-left: 5%">
-    <pre class="brush:java">
-        FileUploader uploader = new FileUploader(context, R.raw.certificate,
-                                        SERVER_ADDRESS, SERVER_SECRET, userID);
-        int failures = uploader.upload();
-        Log.d(TAG, "Upload finished. Number of failed uploads = " + failures);
-    </pre>
-</div>
-
-For security reasons, not all variables are shown in the above snippet. Your server will
-be configured by you, and thus you will have all the information that you need to initialize
-the <code>FileUploader</code>. Key parameters to note:
-
-<ul>
-    <li>R.raw.certificate: the SSL certificate used by your server. You can store it
-        as a raw resource in your app. </li>
-    <li>SERVER_ADDRESS: the address of your server, such as, "https://128.195.185.110:443/"</li>
-    <li>SERVER_SECRET: the apiKey used by your LogServer. </li>
-</ul>
 </p>
 
 
