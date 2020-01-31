@@ -35,17 +35,20 @@ Android NDK installation paths, respectively.
 connected Android device or emulator.
 
 ### Documentation
-The Javadoc sits in the `documentation` directory of the repo and is
-also available in web form
-[here](https://uci-networking-group.github.io/AntMonitor/).
+We provide three sets of Javadocs that you can refer to, depending on
+how you want to use AntMonitor:
 
-#### Generating Documentation
-To generate the documentation you can use Android Studio:
-* Go to Tools -> Generate Javadoc
-* Select the desired scope and view
-* To add a custom overview page, add the following to the command-line
-arguments: `-overview path_to/overview.html --allow-script-in-comments`
-* Copy any resources (e.g. `src/javadoc-resources/release`) to the output folder
+1. [An API overview of the AntMonitor library](https://uci-networking-group.github.io/AntMonitorExample/):
+    refer to this if you only want to use the
+   AntMonitor library as-is.
+2. [Development Documentation of the AntMonitor library](https://uci-networking-group.github.io/AntMonitor/antmonitorlib):
+    refer to this if you want to change/understand the internals of the
+    AntMonitor library.
+3. [Development Documentation of the AntMonitor app](https://uci-networking-group.github.io/AntMonitor/app/):
+    refer to this if you want to change/understand the AntMonitor app.
+
+If you need to update the documentation, refer to
+[UPDATING_DOCS.md](UPDATING_DOCS.md).
 
 ### Citing AntMonitor
 If you create a publication (including web pages, papers published by a

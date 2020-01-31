@@ -6,8 +6,7 @@
  *
  *  AntMonitor is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
- *  (at your option) any later version.
+ *  the Free Software Foundation, version 2 of the License.
  *
  *  AntMonitor is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,44 +18,30 @@
  */
 package edu.uci.calit2.antmonitor.lib.vpn;
 
+import android.util.JsonReader;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.SerializedName;
-
-import org.sandrop.webscarab.plugin.proxy.SSLSocketFactoryFactory;
 import org.sandrop.webscarab.plugin.proxy.SiteData;
-import org.sandroproxy.utils.DNSProxy;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
 import edu.uci.calit2.antmonitor.lib.logging.ConnectionValue;
 import edu.uci.calit2.antmonitor.lib.logging.PacketProcessor;
-import edu.uci.calit2.antmonitor.lib.util.Protocol;
 
 /**
  * Adopted from PrivacyGuard: https://bitbucket.org/Near/privacyguard/src
@@ -302,28 +287,45 @@ class TLSProxyServer extends Thread {
 
     /**
      * See {@link VpnController#addPinnedDomains(InputStream)} for a description
+     * @return {@code true} if the JSON stream was read correctly, and {@code false} otherwise
      */
-    static void addPinnedCNs(InputStream jsonStream) throws IOException {
-        Writer writer = new StringWriter();
-        char[] buffer = new char[1024];
+    static boolean addPinnedCNs(InputStream jsonStream) throws IOException {
+        JsonReader reader = new JsonReader(new InputStreamReader(jsonStream, "UTF-8"));
+        reader.beginArray();
+        while(reader.hasNext()) {
+            reader.beginObject();
 
-        Reader reader = new BufferedReader(new InputStreamReader(jsonStream, "UTF-8"));
-        int n;
-        while ((n = reader.read(buffer)) != -1) {
-            writer.write(buffer, 0, n);
+            String pkgName = null;
+            ArrayList<String> domains = null;
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                switch (name) {
+                    case "packageName":
+                        pkgName = reader.nextString();
+                        break;
+                    case "domains":
+                        reader.beginArray();
+                        domains = new ArrayList<>();
+                        while (reader.hasNext()) {
+                            domains.add(reader.nextString());
+                        }
+                        reader.endArray();
+                        break;
+                    default:
+                        reader.skipValue();
+                }
+            }
+            reader.endObject();
+
+            if (pkgName == null || domains == null || domains.isEmpty())
+                return false;
+
+            for (String dom : domains)
+                pinDomainApp(dom, pkgName);
         }
 
-        String jsonString = writer.toString();
-        Gson gson = new GsonBuilder().create();
-        PinnedDomainsReader pinnedDoms = gson.fromJson(jsonString, PinnedDomainsReader.class);
-
-        if (pinnedDoms == null || pinnedDoms.pinnedCombinations == null)
-            throw new IOException("Invalid JSON format. Please consult the library documentation.");
-
-        for (PinnedDomain pinnedDomain : pinnedDoms.pinnedCombinations) {
-            for (String dom : pinnedDomain.domains)
-                pinDomainApp(dom, pinnedDomain.packageName);
-        }
+        reader.endArray();
+        return true;
     }
 
     private static void pinDomainApp(String domain, String packageName) {
@@ -334,23 +336,5 @@ class TLSProxyServer extends Thread {
         }
 
         appNames.add(packageName);
-    }
-
-    private class PinnedDomain {
-        @SerializedName("packageName")
-        String packageName;
-
-        @SerializedName("domains")
-        ArrayList<String> domains;
-    }
-
-    private class PinnedDomainsReader {
-        @SerializedName("pinnedCombinations")
-        List<PinnedDomain> pinnedCombinations;
-
-        // public constructor is necessary for collections
-        public PinnedDomainsReader() {
-            pinnedCombinations = new ArrayList<>();
-        }
     }
 }

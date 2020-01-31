@@ -5,8 +5,7 @@
  *
  *  AntMonitor is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
- *  (at your option) any later version.
+ *  the Free Software Foundation, version 2 of the License.
  *
  *  AntMonitor is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -241,6 +240,8 @@ public class AntMonitorMainActivity extends AppCompatActivity
      * Convenience method for starting the VPN service
      */
     private void startAntMonitor() {
+        // TODO update license to remove GPLv2+, update documentation, update Gradle?
+
         // Check if we are connected to the internet to see if it makes sense to
         // establish the VPN connection
         if (!mVpnController.isConnectedToInternet()) {

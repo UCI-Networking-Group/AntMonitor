@@ -5,8 +5,7 @@
  *
  *  AntMonitor is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
- *  (at your option) any later version.
+ *  the Free Software Foundation, version 2 of the License.
  *
  *  AntMonitor is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,7 +17,6 @@
  */
 package edu.uci.calit2.antmonitor.lib.logging;
 
-import edu.uci.calit2.antmonitor.lib.logging.PacketConsumer;
 import edu.uci.calit2.antmonitor.lib.util.PacketDumpInfo;
 
 /**
@@ -35,9 +33,6 @@ public class PacketAnnotation {
 
     /** Lets the system know whether or not to allow the packet through */
     private final boolean allowPacket;
-
-    /** Contains the packet itself and its various metrics */
-    private PacketDumpInfo packetInfo;
 
     /** Default constructor: allows the packet through */
     public PacketAnnotation() {

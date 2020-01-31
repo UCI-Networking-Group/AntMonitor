@@ -5,8 +5,7 @@
  *
  *  AntMonitor is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 2 of the License, or
- *  (at your option) any later version.
+ *  the Free Software Foundation, version 2 of the License.
  *
  *  AntMonitor is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -35,8 +34,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import edu.uci.calit2.anteater.R;
 import edu.uci.calit2.anteater.client.android.activity.AntMonitorMainActivity;
-import edu.uci.calit2.anteater.client.android.device.Installation;
-import edu.uci.calit2.antmonitor.lib.logging.FileUploader;
 
 /**
  * NOTE: This service is disabled in the open source version of the code. Adjust it as needed to
@@ -86,9 +83,6 @@ public class FileUploadService extends IntentService {
      */
     private Handler mHandler;
 
-    /** Handles the actual upload */
-    private FileUploader mUploader;
-
     /**
      * Creates a {@link FileUploadService} for uploading network traffic files to the remote data store.
      */
@@ -104,8 +98,6 @@ public class FileUploadService extends IntentService {
         // Create handler tied to main thread.
         // (onCreate runs on the main thread)
         mHandler = new Handler();
-        mUploader = new FileUploader(this, R.raw.certificate, SERVER_ADDRESS, SERVER_SECRET,
-                Installation.id(this));
     }
 
     @Override
@@ -158,8 +150,8 @@ public class FileUploadService extends IntentService {
         boolean uploaded = false;
         File fileToUpload = new File(filePath);
         if (fileToUpload.exists()) {
-            // File found, perform upload.
-            uploaded = mUploader.upload(fileToUpload);
+            // File found, perform upload
+            // TODO: note that this functionality has been removed. Implement as needed
         } else {
             // File not found.
             Log.e(TAG, "File specified in Intent was not found.");
