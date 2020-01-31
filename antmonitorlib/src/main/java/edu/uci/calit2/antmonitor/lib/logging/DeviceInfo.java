@@ -19,8 +19,6 @@ package edu.uci.calit2.antmonitor.lib.logging;
 
 import android.os.Build;
 
-import org.apache.http.conn.util.InetAddressUtils;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,6 +28,7 @@ import java.net.SocketException;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Class which provides static helper methods to fetch information about the device.
@@ -37,6 +36,10 @@ import java.util.List;
  * @author Simon Langhoff, Janus Varmarken
  */
 class DeviceInfo {
+    static private final String IPV4_REGEX =
+            "(([0-1]?[0-9]{1,2}\\.)|(2[0-4][0-9]\\.)|(25[0-5]\\.)){3}(([0-1]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))";
+    static private Pattern IPV4_PATTERN = Pattern.compile(IPV4_REGEX);
+
     public static String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
@@ -97,7 +100,7 @@ class DeviceInfo {
                 for (InetAddress addr : addrs) {
                     if (!addr.isLoopbackAddress()) {
                         String sAddr = addr.getHostAddress().toUpperCase();
-                        boolean isIPv4 = InetAddressUtils.isIPv4Address(sAddr);
+                        boolean isIPv4 = IPV4_PATTERN.matcher(sAddr).matches();
                         if (useIPv4) {
                             if (isIPv4)
                                 return sAddr;
