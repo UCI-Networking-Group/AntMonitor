@@ -24,6 +24,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Environment;
 import android.util.Log;
 import android.util.Pair;
 
@@ -61,20 +62,28 @@ public class TrafficLogFiles {
      */
     private static final String TAG = TrafficLogFiles.class.getSimpleName();
 
+    /**
+     * Directory to save PCAPNG files to
+     */
+    private static final String LOG_DIR = Environment.getExternalStorageDirectory().toString() +
+            "/antmonitor/";
+
     private static long sessionID = 0;
 
     private static String userID;
 
+
     /**
      * Gets an array containing the completed log files, i.e. all log files except the two currently used for logging.
-     * @param ctx A context object of this application. Required in order to access internal storage for this application.
      * @return An array containing the completed log files, i.e. all log files except the two currently used for logging.
      */
-    public static File[] getCompleted(Context ctx) {
-        if (ctx == null)
+    public static File[] getCompleted() {
+        File folder = new File(LOG_DIR);
+
+        if (!folder.exists())
             return new File[]{};
+
         // Find all files in the app folder to upload and delete the rest
-        File folder = ctx.getFilesDir(); // incFile.getParentFile();
         return folder.listFiles(new FilenameFilter() {
 
             @Override
@@ -94,15 +103,18 @@ public class TrafficLogFiles {
      * Factory for creating a new set of stream files of the PCAPNG format, i.e. files to which
      * current network traffic can be written (streamed).
      * @param context A context object of this application.
-     *                Required in order to access internal storage of this application.
+     *                Required in order to access various info about the application.
      * @return A {@link android.util.Pair} of {@link PcapngFile}s. The
      *      first file of the pair is for inbound traffic, and the second file of the pair is for
      *      outbound traffic.
      */
     static Pair<PcapngFile, PcapngFile> createNewActiveFileSet(Context context) {
         Calendar cal = Calendar.getInstance(Locale.getDefault());
+        File folder = new File(LOG_DIR);
+        folder.mkdirs();
+
         // Name file according to timestamp.
-        String baseFilePathName = context.getFilesDir().getPath() + "/" +
+        String baseFilePathName = folder.getAbsolutePath() + "/" +
                 ACTIVE_LOG_FILE_PREFIX + "_" +
                 cal.get(Calendar.DAY_OF_MONTH) + "-" +
                 // January has value = 0. Add 1 to enhance readability.

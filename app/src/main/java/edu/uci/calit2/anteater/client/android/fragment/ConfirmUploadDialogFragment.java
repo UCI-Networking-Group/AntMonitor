@@ -105,7 +105,7 @@ public class ConfirmUploadDialogFragment extends DialogFragment {
         diaBuilder.setTitle(R.string.dialog_title_confirm_upload);
 
         // Get snapshot of files that are ready for upload at the point in time when the dialog is created.
-        final File[] filesToUpload = TrafficLogFiles.getCompleted(getActivity());
+        final File[] filesToUpload = TrafficLogFiles.getCompleted();
 
         // Calculate the aggregated file size across all files currently available for upload.
         long aggregatedFileSize = 0L;

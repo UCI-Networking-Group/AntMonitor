@@ -40,7 +40,7 @@ ln -s aarch64-linux-android-4.9 mips64el-linux-android
 ln -s arm-linux-androideabi-4.9 mipsel-linux-android
 ```
 
-### Documentation
+## Documentation
 We provide three sets of Javadocs that you can refer to, depending on
 how you want to use AntMonitor:
 
@@ -56,7 +56,7 @@ how you want to use AntMonitor:
 If you need to update the documentation, refer to
 [UPDATING_DOCS.md](UPDATING_DOCS.md).
 
-### Citing AntMonitor
+## Citing AntMonitor
 If you create a publication (including web pages, papers published by a
 third party, and publicly available presentations) using the AntMonitor
 app or the AntMonitor Library, please cite the corresponding paper as
@@ -74,3 +74,12 @@ follows:
 We also encourage you to provide us (<antmonitor.uci@gmail.com>) with a
 link to your publication. We use this information in reports to our
 funding agencies.
+
+## Reporting Bugs
+If you find a bug, please open a GitHub issue. Please provide the following information when reporting an issue:
+* The Android version used
+* Steps to reproduce the problem
+* Stack trace, if applicable (for any crashes encountered)
+
+### Known Issues
+There are several bugs in the TLS interception capability, and as of Android 7.0, it is no longer possible to intercept TLS connections.

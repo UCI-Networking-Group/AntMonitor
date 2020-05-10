@@ -80,7 +80,7 @@ public class AntMonitorMainActivity extends AppCompatActivity
     private static final String TAG = "AntMonitorActivity";
 
     // See ANTMONITOR-98
-    public static final boolean ENABLE_CONTRIBUTION_SECTIONS = false;
+    public static final boolean ENABLE_CONTRIBUTION_SECTIONS = true;
 
     public static final String INTENT_START_ANTMONITOR = "INTENT_START_ANTMONITOR";
 

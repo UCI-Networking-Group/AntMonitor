@@ -47,7 +47,7 @@ public class PassiveWifiAndPowerConnectivityReceiver extends WifiAndPowerConnect
     @Override
     protected void onPowerAndOnWifi(Context context) {
         // Get the files that are ready for upload.
-        File[] filesToUpload = TrafficLogFiles.getCompleted(context);
+        File[] filesToUpload = TrafficLogFiles.getCompleted();
         for(int i = 0; i < filesToUpload.length; i++) {
             Intent serviceStarter = new Intent(context, FileUploadService.class);
             serviceStarter.putExtra(FileUploadService.EXTRA_FILE, filesToUpload[i].getAbsolutePath());

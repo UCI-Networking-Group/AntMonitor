@@ -69,7 +69,7 @@ public class UIHelper {
     }
 
     public static void uploadLogs(Activity activity, Context context) {
-        File[] filesToUpload = TrafficLogFiles.getCompleted(activity);
+        File[] filesToUpload = TrafficLogFiles.getCompleted();
         for (int i = 0; i < filesToUpload.length; i++) {
             if (!filesToUpload[i].exists()) {
                 // ignore file if it was removed from disk
@@ -83,7 +83,7 @@ public class UIHelper {
             context.startService(serviceStarter);
         }
 
-        if (filesToUpload.length != 0 && (TrafficLogFiles.getCompleted(activity).length - filesToUpload.length) == 0) {
+        if (filesToUpload.length != 0 && (TrafficLogFiles.getCompleted().length - filesToUpload.length) == 0) {
             PrivacyDB database = PrivacyDB.getInstance(context);
             database.logUpload(filesToUpload.length);
             database.close();
@@ -91,7 +91,7 @@ public class UIHelper {
     }
 
     public static void clearLogs(Activity activity) {
-        File[] filesToUpload = TrafficLogFiles.getCompleted(activity);
+        File[] filesToUpload = TrafficLogFiles.getCompleted();
 
         for (int i =0; i < filesToUpload.length; i++) {
             if (!filesToUpload[i].exists()) {

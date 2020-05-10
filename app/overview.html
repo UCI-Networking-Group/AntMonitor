@@ -48,14 +48,26 @@ the basic goals of the AntMonitor project. If not, please visit the
     </a>.
 </p>
 
-<p> <b>Note:</b> uploading of log files is disabled in public releases of AntMonitor. </p>
-
 <figure id="anteaterclient-block-diagram">
     <img src="images/client-details.png" alt="Diagram picturing the major components of AntClient" width="760px"/>
     <figcaption>
         Fig. 1: AntClient Block Diagram.
     </figcaption>
 </figure>
+
+<h1>Collecting PCAPNG traces</h1>
+<p>
+    You can change what is collected in AntMonitor's UI by visiting the Contribution Section of the app.
+    You can select what apps to log traffic from and how much of the packet to save (headers only or the full packet).
+    With logging enabled, AntMontior will save PCAPNG files in the <code>/data/data/edu.uci.calit2.anteatermo.dev/files</code>
+    directory. Note that PCAPNG files have to be properly finalized before they are ready for inspection in Wireshark.
+    AntMonitor does this whenever any of the following occurs: a file size reaches over 10MB, the VPN connection is turned off,
+    or the network interface is changed (e.g. switching from Wi-Fi to cellular).
+
+    <br><br>
+    To pull the logs from your device or emulator to your PC, you can use the following ADB command:
+    <code>$ adb pull /sdcard/antmonitor/</code>
+</p>
 
 </body>
 </html>
