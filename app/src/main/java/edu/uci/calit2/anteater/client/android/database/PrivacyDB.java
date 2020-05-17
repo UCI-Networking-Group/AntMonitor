@@ -80,7 +80,7 @@ public class PrivacyDB {
     public static final String COLUMN_APP = "appname";
     public static final String COLUMN_PII_VALUE = "pii";
     public static final String COLUMN_PII_LABEL = "label";
-    public static final String COLUMN_ACTION = "action";
+    public static final String COLUMN_ACTION = "pii_action";
     public static final String COLUMN_PII_LABEL__DEFAULT = "Unlabeled";
     public static final String COLUMN_REMOTE_IP = "remoteIp";
 
@@ -116,7 +116,7 @@ public class PrivacyDB {
     public static final int DISABLED_ATTRIBUTE_VALUE = 0;
 
     private static PrivacyDB instance;
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private SQLHandler sqlHandler;
     private SQLiteDatabase _database;
 
