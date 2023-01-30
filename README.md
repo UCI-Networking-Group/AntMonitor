@@ -26,11 +26,7 @@ to our other GitHub Project -
 For the rest of the document we will refer to the directory to which
 you have cloned the repo as `CODE_ROOT`.
 
-* Download [Android Studio](https://developer.android.com/studio/)
-* Download the [Android NDK](https://developer.android.com/ndk/downloads/index.html)
-* Set the `sdk.dir` and the `ndk.dir` keys found in the
-`CODE_ROOT/app/local.properties` file to point to your Android SDK and
-Android NDK installation paths, respectively.
+* Download and install [Android Studio](https://developer.android.com/studio/)
 * Click the "Run App" button within Android Studio to run the app on a
 connected Android device or emulator.
 * If you get the error "Gradle sync failed: No toolchains found in the NDK toolchains folder for ABI with prefix: mips64el-linux-android", run
