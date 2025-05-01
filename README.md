@@ -1,3 +1,7 @@
+⚠️ **This repository is now archived** ⚠️
+
+Alternative tool with similar capabilities: https://github.com/emanuele-f/PCAPdroid
+
 # AntMonitor
 This is a repository for AntMonitor - a VPN-based packet capturing
 system for Android. For an overview of the project, please visit
